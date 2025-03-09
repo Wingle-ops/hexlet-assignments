@@ -1,6 +1,8 @@
 package exercise;
 
 import io.javalin.Javalin;
+import io.javalin.http.NotFoundResponse;
+
 import java.util.List;
 import java.util.Map;
 
@@ -15,20 +17,14 @@ public final class App {
         });
 
         app.get("/companies/{id}", ctx -> {
-            String id = ctx.pathParam("id");
-            boolean found = false; // Флаг для отслеживания найденной компании
+            var id = ctx.pathParam("id");
 
-            for (Map<String, String> map : COMPANIES) {
-                if (map.get("id").equals(id)) {
-                    ctx.json(map);
-                    found = true; // Устанавливаем флаг в true, если компания найдена
-                    break; // Выходим из цикла
-                }
-            }
+            Map<String, String> company = COMPANIES.stream()
+                    .filter(c -> c.get("id").equals(id))
+                    .findFirst()
+                    .orElseThrow(() -> new NotFoundResponse("Company not found"));
 
-            if (!found) {
-                ctx.status(404).json(Map.of("error", "Company not found", "code", 404)); 
-            }
+            ctx.json(company);
         });
 
         app.get("/companies", ctx -> {
