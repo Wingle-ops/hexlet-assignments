@@ -4,7 +4,6 @@ import io.javalin.Javalin;
 import java.util.List;
 import java.util.Map;
 
-
 public final class App {
 
     private static final List<Map<String, String>> COMPANIES = Data.getCompanies();
@@ -17,13 +16,17 @@ public final class App {
 
         app.get("/companies/{id}", ctx -> {
             String id = ctx.pathParam("id");
+            boolean f = false;
             for (Map<String, String> map : COMPANIES) {
                 if (map.get("id").equals(id)) {
                     ctx.json(map);
+                    f = true;
                     break;
                 }
             }
-            ctx.status(404).result("Company not found");
+            if (!f) {
+                ctx.json(Map.of("404", "Company not found"));
+            }
         });
 
         app.get("/companies", ctx -> {
