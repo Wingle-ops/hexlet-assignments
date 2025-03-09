@@ -20,10 +20,10 @@ public final class App {
             for (Map<String, String> map : COMPANIES) {
                 if (map.get("id").equals(id)) {
                     ctx.json(map);
-                    break;
+                } else {
+                    ctx.status(400).result("Company not found");
                 }
             }
-            ctx.status(400).result("Company not found");
         });
 
         app.get("/companies", ctx -> {
