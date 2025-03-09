@@ -40,4 +40,3 @@ tasks.test {
         showStandardStreams = true
     }
 }
-

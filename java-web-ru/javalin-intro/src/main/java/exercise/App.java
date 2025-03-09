@@ -6,7 +6,7 @@ public final class App {
 
     public static Javalin getApp() {
         Javalin app = Javalin.create(config -> {
-        config.bundledPlugins.enableDevLogging();});
+            config.bundledPlugins.enableDevLogging();});
         app.get("/welcome", ctx -> ctx.result("Welcome to Hexlet!"));
         return app;
     }
@@ -16,3 +16,4 @@ public final class App {
         app.start(7070);
     }
 }
+
