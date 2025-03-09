@@ -27,7 +27,7 @@ public final class App {
             }
 
             if (!found) {
-                ctx.status(404).json(Map.of("error", "Company not found", "code", 404)); // Возвращаем JSON с ошибкой
+                ctx.status(404).json(Map.of("error", "Company not found", "code", 404)); 
             }
         });
 
