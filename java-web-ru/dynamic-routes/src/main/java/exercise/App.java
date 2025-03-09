@@ -17,7 +17,7 @@ public final class App {
 
         app.get("/companies/{id}", ctx -> {
             String id = ctx.pathParam("id");
-            for(Map<String, String> map : COMPANIES) {
+            for (Map<String, String> map : COMPANIES) {
                 if (map.get("id").equals(id)) {
                     ctx.json(map);
                     break;
@@ -43,18 +43,3 @@ public final class App {
         app.start(7070);
     }
 }
-//
-//В приложении реализуйте обработчик для динамического маршрута /companies/{id}.
-//
-//При GET-запросе на адрес /companies/{id} приложение должно отдавать представление компании в формате json.
-//
-//Данные о компаниях находятся в константе COMPANIES в виде списка List. Каждая компания — это словарь Map<String, String> с ключом id:
-//
-//// Гипотетический пример
-//Map<String, String> company = Map.of(
-//        "id", "3",
-//        "name", "Google"
-//        "telephone", "12345678"
-//)
-//
-//Если компания с таким идентификатором не существует, приложение должно возвращать страницу с HTTP-кодом 404 и текстом Company not found.
