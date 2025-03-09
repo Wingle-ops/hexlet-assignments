@@ -16,16 +16,18 @@ public final class App {
 
         app.get("/companies/{id}", ctx -> {
             String id = ctx.pathParam("id");
-            boolean f = false;
+            boolean found = false; // Флаг для отслеживания найденной компании
+
             for (Map<String, String> map : COMPANIES) {
                 if (map.get("id").equals(id)) {
                     ctx.json(map);
-                    f = true;
-                    break;
+                    found = true; // Устанавливаем флаг в true, если компания найдена
+                    break; // Выходим из цикла
                 }
             }
-            if (!f) {
-                ctx.json(Map.of("404", "Company not found"));
+
+            if (!found) {
+                ctx.status(404).json(Map.of("error", "Company not found", "code", 404)); // Возвращаем JSON с ошибкой
             }
         });
 
