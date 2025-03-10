@@ -6,6 +6,7 @@ import exercise.model.User;
 import exercise.dto.users.UsersPage;
 import static io.javalin.rendering.template.TemplateUtil.model;
 import io.javalin.rendering.template.JavalinJte;
+import org.apache.commons.lang3.StringUtils;
 
 public final class App {
 
@@ -19,17 +20,22 @@ public final class App {
         });
 
         app.get("/users", ctx -> {
-            String term = ctx.queryParam("term");
-            List<User> us;
-            if (term != null) {
-                us = USERS.stream()
-                        .filter(el -> term.equalsIgnoreCase(el.getFirstName()))
-                        .toList();
+            var term = ctx.queryParam("term");
+            List<User> users;
+            if (term == null) {
+                users = USERS;
             } else {
-                us = USERS;
+                users = USERS
+                        .stream()
+                        .filter(u -> {
+                            return StringUtils.startsWithIgnoreCase(u.getFirstName(), term);
+                        })
+                        .toList();
             }
-            UsersPage page = new UsersPage(us, term);
+
+            var page = new UsersPage(users, term);
             ctx.render("users/index.jte", model("page", page));
+
         });
 
         app.get("/", ctx -> {
