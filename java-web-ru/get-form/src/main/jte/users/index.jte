@@ -10,6 +10,6 @@
     <ul>
         @for (User  user : page.getUsers()) {
             <li>${user.getFirstName()}</li>
-        }
+        @endfor
     </ul>
-}
+@endif

@@ -20,11 +20,15 @@ public final class App {
 
         app.get("/users", ctx -> {
             String term = ctx.queryParam("term");
-            List<User> uss = USERS.stream()
-                    .filter(el -> term.equalsIgnoreCase(el.getFirstName()))
-                    .toList();
-
-            UsersPage page = new UsersPage(uss);
+            List<User> us;
+            if (term != null) {
+                us = USERS.stream()
+                        .filter(el -> term.equalsIgnoreCase(el.getFirstName()))
+                        .toList();
+            } else {
+                us = List.of();
+            }
+            UsersPage page = new UsersPage(us);
             ctx.render("users/index.jte", model("page", page));
         });
 
