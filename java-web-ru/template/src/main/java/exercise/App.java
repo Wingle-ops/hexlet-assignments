@@ -37,7 +37,7 @@ public final class App {
             }
 
             UserPage page = new UserPage(user);
-            ctx.render("users/index.jte", model("page", page));
+            ctx.render("users/show.jte", model("page", page));
         });
 
         app.get("/", ctx -> {
