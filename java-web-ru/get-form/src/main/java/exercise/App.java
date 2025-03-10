@@ -21,14 +21,14 @@ public final class App {
         app.get("/users", ctx -> {
             String term = ctx.queryParam("term");
             List<User> us;
-            if (term != null && !term.isEmpty()) {
+            if (term != null) {
                 us = USERS.stream()
                         .filter(el -> term.equalsIgnoreCase(el.getFirstName()))
                         .toList();
             } else {
-                us = List.of();
+                us = USERS;
             }
-            UsersPage page = new UsersPage(us);
+            UsersPage page = new UsersPage(us, term);
             ctx.render("users/index.jte", model("page", page));
         });
 
