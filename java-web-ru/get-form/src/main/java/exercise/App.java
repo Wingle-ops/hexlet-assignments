@@ -26,7 +26,7 @@ public final class App {
                         .filter(el -> term.equalsIgnoreCase(el.getFirstName()))
                         .toList();
             } else {
-                us = USERS;
+                us = List.of();
             }
             UsersPage page = new UsersPage(us);
             ctx.render("users/index.jte", model("page", page));
