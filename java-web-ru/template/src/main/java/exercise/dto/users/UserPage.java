@@ -10,3 +10,4 @@ import lombok.Getter;
 public class UserPage {
     private User user;
 }
+
