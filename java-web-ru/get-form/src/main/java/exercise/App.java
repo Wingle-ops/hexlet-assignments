@@ -21,7 +21,7 @@ public final class App {
         app.get("/users", ctx -> {
             String term = ctx.queryParam("term");
             List<User> us;
-            if (term != null) {
+            if (term != null && !term.isEmpty()) {
                 us = USERS.stream()
                         .filter(el -> term.equalsIgnoreCase(el.getFirstName()))
                         .toList();
