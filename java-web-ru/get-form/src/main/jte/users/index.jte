@@ -6,10 +6,12 @@
     <button type="submit">Search</button>
 </form>
 
-@if (!page.getUsers().isEmpty())
+@if (!page.getUsers().isEmpty()) {
     <ul>
-        @for (User  user : page.getUsers())
+        @for (User  user : page.getUsers()) {
             <li>${user.getFirstName()}</li>
+        }
         @endfor
     </ul>
+}
 @endif
