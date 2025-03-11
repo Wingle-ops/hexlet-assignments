@@ -1,4 +1,4 @@
-@template.layout.page(content=@'
+@template.layout.page(content = @'
 <form action="/users" method="post">
     <div>
         <label>
