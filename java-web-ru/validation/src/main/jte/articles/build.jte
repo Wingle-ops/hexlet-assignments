@@ -1,4 +1,16 @@
+@import exercise.dto.articles.BuildArticlesPage
+@import BuildArticlesPage page
+
 @template.layout.page(content = @'
+
+@if(page.getErrors() != null)
+    @for(var validator : page.getErrors().values())
+        @for(var el : validator)
+            ${el.getMessage()}
+        @endfor
+    @endfor
+@endif
+
 <form action="/articles" method="post">
     <div>
         <label>
