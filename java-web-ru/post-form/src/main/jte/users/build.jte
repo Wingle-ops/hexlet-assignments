@@ -24,6 +24,6 @@
             <input type="password" required name="password" />
         </label>
     </div>
-    <input type="submit" value="Зарегистрировать"/>
+    <input type="submit" value="Зарегистрировать" />
 </form>
 ')
