@@ -1,29 +1,34 @@
-@import exercise.dto.articles.BuildArticlesPage
-@import BuildArticlesPage page
+@import exercise.dto.articles.BuildArticlePage
+@param BuildArticlePage page
 
-@template.layout.page(content = @'
+@template.layout.page(
+    content = @`
+        @if(page.getErrors() != null)
+            <div class="mb-3">
+                <ul>
+                    @for(var validator : page.getErrors().values())
+                        @for(var error : validator)
+                            <li>${error.getMessage()}</li>
+                        @endfor
+                    @endfor
+                </ul>
+            </div>
+        @endif
 
-@if(page.getErrors() != null)
-    @for(var validator : page.getErrors().values())
-        @for(var el : validator)
-            <p>${el.getMessage()}</p>
-        @endfor
-    @endfor
-@endif
-
-<form action="/articles" method="post">
-    <div>
-        <label>
-            Название статьи
-            <input type="text" name="title" value="${page.getTitle()}"/>
-        </label>
-    </div>
-    <div>
-        <label>
-            Содержимое статьи
-            <textarea name="content" value="${page.getContent()}"></textarea>
-        </label>
-    </div>
-    <input type="submit" name="Отправить"/>
-</form>
-')
+        <div class="mx-auto p-4 py-md-5">
+            <form action="/articles" method="post">
+                <div class="mb-3">
+                    <label class="form-label">
+                        Название
+                        <input type="text" class="form-control" name="title" value="${page.getTitle()}" />
+                    </label>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Содержание</label>
+                    <textarea class="form-control" rows="20" cols="70" type="text" name="content">${page.getContent()}</textarea>
+                </div>
+                <input type="submit" class="btn btn-primary" value="Сохранить" />
+            </form>
+        </div>
+    `
+)

@@ -36,14 +36,12 @@ public final class App {
         });
 
         app.post("/articles", ctx -> {
-            String title = "";
-            String content = "";
             try {
-                title = ctx.formParamAsClass("title", String.class)
+                String title = ctx.formParamAsClass("title", String.class)
                         .check(value -> value.length() >= 2, "Статья должна быть не короче 10 символов")
                         .get();
 
-                content = ctx.formParamAsClass("content", String.class)
+                String content = ctx.formParamAsClass("content", String.class)
                         .check(value -> value.length() >= 10, "У пароля большая длина")
                         .check(value -> !ArticleRepository.existsByTitle(value),
                                 "Статья с таким названием уже существует")
@@ -53,8 +51,10 @@ public final class App {
                 ArticleRepository.save(page);
                 ctx.render("/articles");
             } catch (ValidationException e) {
+                String title = ctx.formParam("title");
+                String content = ctx.formParam("content");
                 BuildArticlePage page = new BuildArticlePage(title, content, e.getErrors());
-                ctx.render("/articles/build.jte", model("page", page));
+                ctx.render("/articles/build.jte", model("page", page)).status(422);
             }
         });
 
