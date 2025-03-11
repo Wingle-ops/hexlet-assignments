@@ -8,11 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
 
-@Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class BuildArticlePage {
-    private String name;
-    private String data;
+    private String title;
+    private String content;
     private Map<String, List<ValidationError<Object>>> errors;
 }

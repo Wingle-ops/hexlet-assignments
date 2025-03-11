@@ -30,9 +30,9 @@ public final class App {
             ctx.render("articles/index.jte", model("page", page));
         });
 
-        app.get("/articles/build", ctx -> {
+        app.get("articles/build", ctx -> {
             var page = new BuildArticlePage();
-            ctx.render("/articles/build.jte", model("page", page));
+            ctx.render("articles/build.jte", model("page", page));
         });
 
         app.post("/articles", ctx -> {
