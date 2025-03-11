@@ -39,11 +39,11 @@ public final class App {
             String title = ctx.formParam("title");
             String content = ctx.formParam("content");
             try {
-                title = ctx.formParamAsClass("aaa", String.class)
+                title = ctx.formParamAsClass("title", String.class)
                         .check(value -> value.length() >= 2, "Статья должна быть не короче 10 символов")
                         .get();
 
-                content = ctx.formParamAsClass("bbb", String.class)
+                content = ctx.formParamAsClass("content", String.class)
                         .check(value -> value.length() >= 10, "У пароля большая длина")
                         .check(value -> !ArticleRepository.existsByTitle(value),
                                 "Статья с таким названием уже существует")
