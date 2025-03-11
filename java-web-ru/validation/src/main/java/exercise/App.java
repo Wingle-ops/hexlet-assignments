@@ -36,8 +36,8 @@ public final class App {
         });
 
         app.post("/articles", ctx -> {
-            String title = ctx.formParam("title");
-            String content = ctx.formParam("content");
+            String title = "";
+            String content = "";
             try {
                 title = ctx.formParamAsClass("title", String.class)
                         .check(value -> value.length() >= 2, "Статья должна быть не короче 10 символов")

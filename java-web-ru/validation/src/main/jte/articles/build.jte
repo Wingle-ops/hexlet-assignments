@@ -6,7 +6,7 @@
 @if(page.getErrors() != null)
     @for(var validator : page.getErrors().values())
         @for(var el : validator)
-            ${el.getMessage()}
+            <p>${el.getMessage()}</p>
         @endfor
     @endfor
 @endif
@@ -15,13 +15,13 @@
     <div>
         <label>
             Название статьи
-            <input type="text" name="title"/>
+            <input type="text" name="title" value="${page.getTitle()}"/>
         </label>
     </div>
     <div>
         <label>
             Содержимое статьи
-            <textarea name="content"></textarea>
+            <textarea name="content" value="${page.getContent()}"></textarea>
         </label>
     </div>
     <input type="submit" name="Отправить"/>
