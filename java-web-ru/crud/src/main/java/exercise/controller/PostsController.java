@@ -12,18 +12,22 @@ import io.javalin.http.NotFoundResponse;
 public class PostsController {
 
     public static void index(Context ctx) {
-        int id = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
-        int count = 5;
-        var list = PostRepository.findAll(id, count);
-        PostsPage page = new PostsPage(list, id);
-        ctx.render("/posts/index.jte", model("page", page));
+        var page = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
+        var pageSize = 5;
+
+        var sliceOfPosts = PostRepository.findAll(page, pageSize);
+
+        var postPage = new PostsPage(sliceOfPosts, page);
+        ctx.render("posts/index.jte", model("page", postPage));
     }
 
     public static void show(Context ctx) {
-        Long id = ctx.pathParamAsClass("{id}", Long.class).get();
+        var id = ctx.pathParamAsClass("id", Long.class).get();
         var post = PostRepository.find(id)
-                .orElseThrow(() -> new NotFoundResponse("Такой страницы не существует"));
-        PostPage page = new PostPage(post);
-        ctx.render("/posts/show.jte", model("page", page));
+                .orElseThrow(() -> new NotFoundResponse("Post not found"));
+
+        var page = new PostPage(post);
+        ctx.render("posts/show.jte", model("page", page));
     }
+
 }

@@ -6,8 +6,8 @@ import exercise.model.Post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
 @AllArgsConstructor
+@Getter
 public class PostsPage {
     private List<Post> posts;
     private int page;
