@@ -17,27 +17,32 @@ public class UsersController {
         ctx.render("users/build.jte");
     }
 
-    public static void reg(Context ctx) {
-        String firstname = ctx.pathParam("firstName");
-        String lastName = ctx.pathParam("lastName");
-        String email = ctx.pathParam("email");
-        String password = Security.encrypt(ctx.pathParam("password"));
-        String token = Security.generateToken();
+    public static void create(Context ctx) throws Exception {
+        var firstName = StringUtils.capitalize(ctx.formParam("firstName"));
+        var lastName = StringUtils.capitalize(ctx.formParam("lastName"));
+        var email = ctx.formParam("email").trim().toLowerCase();
+        var password = ctx.formParam("password");
+        var encryptedPassword = Security.encrypt(password);
+        var token = Security.generateToken();
 
-        User user = new User(firstname, lastName, email, password, token);
+        var user = new User(firstName, lastName, email, encryptedPassword, token);
         UserRepository.save(user);
-        ctx.cookie("visited", token);
+
+        ctx.cookie("token", token);
         ctx.redirect(NamedRoutes.userPath(user.getId()));
     }
 
-    public static void show(Context ctx) {
-        String cookie = ctx.cookie("visited");
-        var user = UserRepository.find(ctx.pathParamAsClass("{id}", Long.class).get());
-        if ((user.get().getToken()).equals(cookie)) {
-            ctx.render(NamedRoutes.usersPath() +  "/show.jte", model("page", user.get()));
-        } else {
+    public static void show(Context ctx) throws Exception {
+        var id = ctx.pathParamAsClass("id", Long.class).get();
+        var token = ctx.cookie("token") == null ? null : ctx.cookie("token");
+        var user = UserRepository.find(id)
+                .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
+        if (user == null || !user.getToken().equals(token)) {
             ctx.redirect(NamedRoutes.buildUserPath());
+            return;
         }
+        var page = new UserPage(user);
+        ctx.render("users/show.jte", model("page", page));
     }
 }
 

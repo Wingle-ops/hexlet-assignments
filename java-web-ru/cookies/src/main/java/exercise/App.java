@@ -14,7 +14,8 @@ public final class App {
             config.fileRenderer(new JavalinJte());
         });
 
-        app.post(NamedRoutes.userPath("{id}"), UsersController::reg);
+        app.post(NamedRoutes.usersPath(), UsersController::create);
+        app.get(NamedRoutes.buildUserPath(), UsersController::build);
 
         app.get(NamedRoutes.userPath("{id}"), UsersController::show);
 
