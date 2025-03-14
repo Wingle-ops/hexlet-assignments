@@ -20,6 +20,9 @@ public final class App {
         app.get(NamedRoutes.buildPostPath(), PostsController::build);
         app.post(NamedRoutes.postsPath(), PostsController::create);
 
+        app.get(NamedRoutes.postsPath(), PostsController::index);
+        app.get(NamedRoutes.postPath("{id}"), PostsController::show);
+
         app.get(NamedRoutes.editPostPath("{id}"), PostsController::edit);
         app.post(NamedRoutes.postPath("{id}"), PostsController::update);
 
@@ -31,5 +34,3 @@ public final class App {
         app.start(7070);
     }
 }
-
-

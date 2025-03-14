@@ -7,12 +7,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class EditPostPage {
-    Long id;
-    String name;
-    String body;
+    private long id;
+    private String name;
+    private String body;
     private Map<String, List<ValidationError<Object>>> errors;
 }
