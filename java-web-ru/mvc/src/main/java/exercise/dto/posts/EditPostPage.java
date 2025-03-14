@@ -14,11 +14,11 @@ public class EditPostPage {
     Long id;
     String name;
     String body;
-    Map<String, List<ValidationError>> errors;
-
-    public EditPostPage(Long id, String name, String body) {
-        this.id = id;
-        this.name = name;
-        this.body = body;
-    }
+    private Map<String, List<ValidationError<Object>>> errors;
+//
+//    public EditPostPage(Long id, String name, String body, Map<String, List<ValidationError<Object>>> errors) {
+//        this.id = id;
+//        this.name = name;
+//        this.body = body;
+//    }
 }
