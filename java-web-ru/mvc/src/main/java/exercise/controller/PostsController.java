@@ -58,46 +58,41 @@ public class PostsController {
     }
 
     public static void edit(Context ctx) {
-        Long id = ctx.queryParamAsClass("id", Long.class).get();
-        Post page = PostRepository.find(id).orElseThrow(() -> new NotFoundResponse("Пост не найден"));
+        var id = ctx.pathParamAsClass("id", Long.class).get();
+        var post = PostRepository.find(id)
+                .orElseThrow(() -> new NotFoundResponse("Post not found"));
+
+        var page = new EditPostPage(id, post.getName(), post.getBody(), null);
         ctx.render("posts/edit.jte", model("page", page));
     }
 
-//Реализуйте контроллер с методами, необходимыми для вывода формы редактирования и обновления поста.
-//
-//При обновлении поста, данные от пользователей должны пройти валидацию по тем же правилам, что и при создании.
-//Если данные при редактировании не прошли валидацию, должна отобразиться форма редактирования с полями,
-//заполненными данными.
-//При успешном обновлении нужно сделать редирект на страницу списка постов.
-
     public static void update(Context ctx) {
-        Long id = ctx.pathParamAsClass("id", Long.class).get();
+
+        var id = ctx.pathParamAsClass("id", Long.class).get();
 
         try {
-            // Получаем и проверяем данные из формы
-            String name = ctx.formParamAsClass("name", String.class)
+            var name = ctx.formParamAsClass("name", String.class)
                     .check(value -> value.length() >= 2, "Название не должно быть короче двух символов")
                     .get();
 
-            String body = ctx.formParamAsClass("body", String.class)
+            var body = ctx.formParamAsClass("body", String.class)
                     .check(value -> value.length() >= 10, "Пост должен быть не короче 10 символов")
                     .get();
 
-            // Находим пост и обновляем его
-            Post post = PostRepository.find(id)
-                    .orElseThrow(() -> new NotFoundResponse("Пост не найден"));
+            var post = PostRepository.find(id)
+                    .orElseThrow(() -> new NotFoundResponse("Post not found"));
+
             post.setName(name);
             post.setBody(body);
 
-            // Перенаправляем на страницу поста после успешного обновления
-            ctx.redirect("/posts/" + id);
+            PostRepository.save(post);
+            ctx.redirect(NamedRoutes.postsPath());
 
         } catch (ValidationException e) {
-            // Если произошла ошибка валидации, отображаем форму с ошибками
-            String name = ctx.formParam("name");
-            String body = ctx.formParam("body");
-            EditPostPage page = new EditPostPage(id, name, body, e.getErrors());
-            ctx.render("posts/edit.jte", model("page", page));
+            var name = ctx.formParam("name");
+            var body = ctx.formParam("body");
+            var page = new EditPostPage(id, name, body, e.getErrors());
+            ctx.render("posts/edit.jte", model("page", page)).status(422);
         }
     }
 }

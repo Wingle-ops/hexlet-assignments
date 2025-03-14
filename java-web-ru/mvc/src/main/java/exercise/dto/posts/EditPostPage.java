@@ -15,10 +15,4 @@ public class EditPostPage {
     String name;
     String body;
     private Map<String, List<ValidationError<Object>>> errors;
-//
-//    public EditPostPage(Long id, String name, String body, Map<String, List<ValidationError<Object>>> errors) {
-//        this.id = id;
-//        this.name = name;
-//        this.body = body;
-//    }
 }

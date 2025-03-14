@@ -1,5 +1,5 @@
-@import exercise.dto.posts.BuildPostPage
-@import BuildPostPage page
+@import exercise.dto.posts.EditPostPage
+@import EditPostPage page
 
 @template.layout.page(content = @'
 @if(page.getErrors() != null)
@@ -14,7 +14,7 @@
     </div>
 @endif
 
-<form action="pages" method="post">
+<form action="pages/${page.getId()}" method="post">
     <div>
         <label>
             Название поста
@@ -25,9 +25,9 @@
     <div>
         <label>
             Содержимое поста
-            <input type="text" required name="body" value="${page.getBody()}/>
+            <textarea type="text" name="body">${page.getBody()}</textarea>
         </label>
     </div>
-    <input type="submit" name="submit" value="редактировать пост"/>
+    <input type="submit" name="submit"/>
 </form>
 ')

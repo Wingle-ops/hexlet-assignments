@@ -23,17 +23,11 @@ public final class App {
         app.get(NamedRoutes.postsPath(), PostsController::index);
         app.get(NamedRoutes.postPath("{id}"), PostsController::show);
 
+        app.get(NamedRoutes.editPostPath("{id}"), PostsController::edit);
         app.post(NamedRoutes.postPath("{id}"), PostsController::update);
 
         return app;
     }
-
-//    Добавьте в приложение роутинг для редактирования постов.
-//
-//    Обычно обновление сущности принято делать с помощью глаголов PATCH/PUT.
-//    Но здесь ситуация другая — мы не можем отправлять PATCH/PUT запросы из HTML-формы.
-//    Поэтому в этом упражнении сделайте обновление сущности через POST-запрос на адрес /posts/{id}.
-//    Так обновление будет работать в браузере.
 
     public static void main(String[] args) {
         Javalin app = getApp();
