@@ -35,7 +35,7 @@ public final class App {
                 // Вычисляем SHA-256 хеш
                 String sha = DigestUtils.sha256Hex(responseBody);
                 // Добавляем хеш в заголовок
-                ctx.header("X-Response-Digest", sha);
+                ctx.header("X-Response-Digest ", sha);
             }
         });
 
