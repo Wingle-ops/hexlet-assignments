@@ -59,9 +59,8 @@ public class PostsController {
 
     public static void edit(Context ctx) {
         Long id = ctx.queryParamAsClass("id", Long.class).get();
-            Post page = PostRepository.find(id)
-                    .orElseThrow(() -> new NotFoundResponse("Пост не найден"));
-            ctx.render("posts/edit.jte", model("page", page));
+        Post page = PostRepository.find(id).orElseThrow(() -> new NotFoundResponse("Пост не найден"));
+        ctx.render("posts/edit.jte", model("page", page));
     }
 
 //Реализуйте контроллер с методами, необходимыми для вывода формы редактирования и обновления поста.
