@@ -29,14 +29,9 @@ public final class App {
         app.post(NamedRoutes.postPath("{id}"), PostsController::update);
 
         app.after(ctx -> {
-            // Получаем тело ответа
-            String responseBody = ctx.path();
-            if (!responseBody.isEmpty()) {
-                // Вычисляем SHA-256 хеш
-                String sha = DigestUtils.sha256Hex(responseBody);
-                // Добавляем хеш в заголовок
-                ctx.header("X-Response-Digest ", sha);
-            }
+            String path = ctx.result();
+            String sha = DigestUtils.sha256Hex(path);
+            ctx.header("X-Response-Digest", sha);
         });
 
 //        Создайте мидлвару, которая будет вычислять SHA-256 хеш тела ответа и добавлять его
