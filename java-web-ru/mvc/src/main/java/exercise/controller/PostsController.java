@@ -72,7 +72,10 @@ public class PostsController {
 //При успешном обновлении нужно сделать редирект на страницу списка постов.
 
     public static void update(Context ctx) {
+        Long id = ctx.pathParamAsClass("id", Long.class).get();
+
         try {
+            // Получаем и проверяем данные из формы
             String name = ctx.formParamAsClass("name", String.class)
                     .check(value -> value.length() >= 2, "Название не должно быть короче двух символов")
                     .get();
@@ -81,17 +84,21 @@ public class PostsController {
                     .check(value -> value.length() >= 10, "Пост должен быть не короче 10 символов")
                     .get();
 
-            var post = PostRepository.find(ctx.pathParamAsClass("{id}", Long.class).get());
-            post.get().setName(name);
-            post.get().setBody(body);
-            ctx.redirect("posts/" + ctx.pathParamAsClass("{id}", String.class));
+            // Находим пост и обновляем его
+            Post post = PostRepository.find(id)
+                    .orElseThrow(() -> new NotFoundResponse("Пост не найден"));
+            post.setName(name);
+            post.setBody(body);
+
+            // Перенаправляем на страницу поста после успешного обновления
+            ctx.redirect("/posts/" + id);
 
         } catch (ValidationException e) {
+            // Если произошла ошибка валидации, отображаем форму с ошибками
             String name = ctx.formParam("name");
             String body = ctx.formParam("body");
-            Long id = ctx.pathParamAsClass("{id}", Long.class).get();
-            BuildPostPage page = new BuildPostPage(name, body, e.getErrors());
-            ctx.render("posts/" + id, model("page", page));
+            EditPostPage page = new EditPostPage(id, name, body, e.getErrors());
+            ctx.render("posts/edit.jte", model("page", page));
         }
     }
 }
