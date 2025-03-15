@@ -1,23 +1,19 @@
 @import exercise.dto.MainPage
-@import exercise.util.NamedRouters
-@import exercise.model.User
-@import MainPage cookie
-@import User user
+@import exercise.util.NamedRoutes
+@param MainPage page
 
-@template.layout.page(coontent = @'
-<!DOCTYPE html>
-    <html lang="ru">
-        <body>
-            @if(${cookie.getName()} == null) {
-                <a href=${NamedRouters.loginPath()}>Войти</a>
-            } else {
-                <div>
-                    <p>${user.getName()}</p>
-                    <form action="/sessions" method="post">
-                        <button type="submit">Выйти</button>
-                    </form>
-                <div>
-            }
-        </body>
-    </html>
-')
+@template.layout.page(
+    content = @`
+        @if (page.getName() != null)
+          <h1 class="mb-3"> Добро пожаловать, ${page.getName().toString()}</h1>
+          <form action="${NamedRoutes.logoutPath()}" method="post">
+              <input type="submit" value="Выйти">
+          </form>
+        @else
+            <h1 class="mb-3"> Добро пожаловать, гость</h1>
+            <form action="${NamedRoutes.buildSessionPath()}" method="get">
+                <input type="submit" value="Войти">
+            </form>
+        @endif
+    `
+)
