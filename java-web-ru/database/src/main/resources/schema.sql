@@ -1,7 +1,5 @@
-DROP TABLE IF EXISTS products;
-
-CREATE TABLE product (
-    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE products (
+    id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(255),
-    price INTEGER
+    price INT
 );
