@@ -14,31 +14,32 @@ import java.sql.Statement;
 public class ProductsRepository extends BaseRepository {
 
     public static void save(Product product) throws SQLException {
-        String save = "INSERT INTO product (title, price) VALUES (?, ?)";
-        try (var connect = dataSource.getConnection();
-             PreparedStatement stmt = connect.prepareStatement(save, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, product.getTitle());
-            stmt.setInt(2, product.getPrice());
-            stmt.executeUpdate();
-            ResultSet resultSet = stmt.getGeneratedKeys();
-            if (resultSet.next()) {
-                product.setId(resultSet.getLong("id"));
+        String sql = "INSERT INTO cars (make, model) VALUES (?, ?)";
+        try (var conn = dataSource.getConnection();
+             var preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, product.getTitle());
+            preparedStatement.setInt(2, product.getPrice());
+            preparedStatement.executeUpdate();
+            var generatedKeys = preparedStatement.getGeneratedKeys();
+            // Устанавливаем ID в сохраненную сущность
+            if (generatedKeys.next()) {
+                product.setId(generatedKeys.getLong(1));
             } else {
-                throw new SQLException("Не удалось добавить объект в БД");
+                throw new SQLException("DB have not returned an id after saving an entity");
             }
         }
     }
 
     public static Optional<Product> find(Long id) throws SQLException {
-        String find = "SELECT * FROM product WHERE id = ?";
-        try (var connect = dataSource.getConnection();
-             PreparedStatement stmt = connect.prepareStatement(find)) {
+        var sql = "SELECT * FROM cars WHERE id = ?";
+        try (var conn = dataSource.getConnection();
+             var stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
-            ResultSet resultSet = stmt.executeQuery();
+            var resultSet = stmt.executeQuery();
             if (resultSet.next()) {
-                String title = resultSet.getString("title");
-                int price = resultSet.getInt("price");
-                Product product = new Product(title, price);
+                var make = resultSet.getString("title");
+                var model = resultSet.getInt("price");
+                var product = new Product(make, model);
                 product.setId(id);
                 return Optional.of(product);
             }
@@ -47,20 +48,20 @@ public class ProductsRepository extends BaseRepository {
     }
 
     public static List<Product> getEntities() throws SQLException {
-        String getEntities = "SELECT * FROM product";
-        try (var connect = dataSource.getConnection();
-             PreparedStatement stmt = connect.prepareStatement(getEntities)) {
-            List<Product> products = new ArrayList<>();
-            ResultSet resultSet = stmt.executeQuery();
+        var sql = "SELECT * FROM cars";
+        try (var conn = dataSource.getConnection();
+             var stmt = conn.prepareStatement(sql)) {
+            var resultSet = stmt.executeQuery();
+            var result = new ArrayList<Product>();
             while (resultSet.next()) {
-                Long id = resultSet.getLong("id");
-                String title = resultSet.getString("title");
-                int price = resultSet.getInt("price");
-                Product product = new Product(title, price);
+                var id = resultSet.getLong("id");
+                var make = resultSet.getString("title");
+                var model = resultSet.getInt("price");
+                var product = new Product(make, model);
                 product.setId(id);
-                products.add(product);
+                result.add(product);
             }
-            return products;
+            return result;
         }
     }
 }
