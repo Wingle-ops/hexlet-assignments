@@ -12,22 +12,14 @@ import jakarta.servlet.http.HttpServletResponse;
 public class HelloServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        // Получаем имя из параметров запроса
-        String name = req.getParameter("name");
-
-        // Проверяем, если имя не было передано или пустое
-        if (name == null || name.isEmpty()) {
-            name = "Guest"; // Устанавливаем значение по умолчанию
-        }
-
-        // Формируем приветственное сообщение
-        String welcome = "Hello, " + name + "!";
-
-        // Устанавливаем атрибут для передачи в JSP
-        req.setAttribute("welcome", welcome);
-
-        // Перенаправляем на JSP-страницу
-        req.getRequestDispatcher("WEB-INF/hello.jsp").forward(req, res);
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response) throws ServletException, IOException {
+        var parameter = request.getParameter("name");
+        var name = parameter == null ? "Guest" : parameter;
+        request.setAttribute("name", name);
+        request.getRequestDispatcher("/WEB-INF/hello.jsp").forward(request, response);
     }
 }
+
+
+
